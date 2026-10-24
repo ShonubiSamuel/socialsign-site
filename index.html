@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SocialSign</title>
+<meta name="description" content="SocialSign brings a lifelike digital signer, Ada, into the digital experiences people already use: online videos, live broadcasts, websites and apps.">
+<meta property="og:title" content="SocialSign">
+<meta property="og:description" content="The content is already there. Make it accessible in sign language.">
+<meta property="og:image" content="media/ada-welcome.png">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: Signapse's rhythm in SocialSign's own style: a floating pill nav, a deep hero card with
+   layered product screens and Ada standing in front, full-width bands that alternate light / tint /
+   deep, panels that overlap band edges, and Ada signing the page from a corner window. */
+:root {
+  --acc: #3D45C2; --acc-hover: #343BAA; --acc-2: #A9AEF0;   /* indigo, and its light partner on deep ground */
+  --soft: #EEEFFC; --stage: #8F95D3; --mint: #CFEBDD;        /* washes and signer stages */
+  --deep: #161936; --deep-2: #23285A;                        /* the deep bands */
+  --ink: #1C1E3A; --ink-2: #555872; --ink-3: #6E7189; --line: #E9E9F0;
+  --page: #FFFFFF; --tint: #F5F5FB;
+  --font: 'Rubik', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --r-xl: 32px; --r-l: 24px; --r-m: 16px; --pill: 999px;
+  --shadow: 0 30px 60px -24px rgba(16, 18, 48, .45);
+  --shadow-s: 0 12px 30px -14px rgba(16, 18, 48, .30);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 16px/1.55 var(--font); letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+img, video { display: block; max-width: 100%; }
+a { color: inherit; }
+.in { width: 100%; max-width: 1200px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -0.025em; text-wrap: balance; }
+.hl { color: var(--acc-2); }
+:focus-visible { outline: 3px solid #2F6FEB; outline-offset: 3px; border-radius: 6px; }
+
+/* announcement bar */
+.ann { background: var(--acc); color: #fff; font-size: 13.5px; text-align: center; padding: 7px 16px; }
+.ann b { font-weight: 500; }
+
+/* nav */
+.navwrap { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; padding-top: 12px; pointer-events: none; }
+.nav { pointer-events: auto; margin: 0 auto; width: min(1180px, calc(100% - 24px)); background: rgba(255, 255, 255, .9); backdrop-filter: saturate(1.4) blur(10px); -webkit-backdrop-filter: saturate(1.4) blur(10px); border: 1px solid var(--line); border-radius: var(--pill); padding: 7px 7px 7px 20px; display: flex; align-items: center; gap: 18px; box-shadow: var(--shadow-s); }
+.logo { display: inline-flex; align-items: center; gap: 9px; font-weight: 700; font-size: 18px; text-decoration: none; color: var(--ink); }
+.logo .mk { width: 26px; height: 26px; border-radius: 8px; background: var(--acc); display: grid; place-items: center; color: #fff; }
+.nav .links { display: flex; gap: 4px; flex: 1; }
+.nav .links a { text-decoration: none; color: var(--ink-2); font-size: 14.5px; padding: 8px 14px; border-radius: var(--pill); }
+.nav .links a:hover { background: var(--tint); color: var(--ink); }
+.btn { display: inline-flex; align-items: center; gap: 10px; font: inherit; font-size: 15px; font-weight: 500; border-radius: var(--pill); border: 0; cursor: pointer; text-decoration: none; white-space: nowrap; transition: background .2s, transform .2s; }
+.btn:hover { transform: translateY(-1px); }
+.btn.dark { background: var(--ink); color: #fff; padding: 11px 20px; }
+.btn.acc { background: var(--acc); color: #fff; padding: 6px 6px 6px 22px; }
+.btn.acc:hover { background: var(--acc-hover); }
+.btn .arr { width: 36px; height: 36px; border-radius: 50%; background: #fff; color: var(--acc); display: grid; place-items: center; transition: transform .2s; }
+.btn:hover .arr { transform: translateX(2px); }
+.btn.lav { background: var(--acc-2); color: var(--deep); padding: 6px 6px 6px 22px; }
+.btn.lav .arr { background: var(--deep); color: #fff; }
+.btn.line { background: transparent; color: #fff; padding: 11px 20px; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35); }
+.btn.white { background: #fff; color: var(--ink); padding: 11px 20px; box-shadow: inset 0 0 0 1px var(--line); }
+
+/* hero: the deep card */
+.hero { margin-top: -66px; padding-top: 78px; }
+.herocard { position: relative; border-radius: var(--r-xl); overflow: hidden; background: radial-gradient(120% 90% at 85% 10%, #3A4192 0%, rgba(58, 65, 146, 0) 55%), linear-gradient(160deg, var(--deep-2), var(--deep) 60%); color: #fff; padding: 64px 56px 140px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: center; min-height: 600px; }
+.herocard::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(255, 255, 255, .07) 1px, transparent 1px); background-size: 22px 22px; mask-image: linear-gradient(90deg, transparent, #000 60%); -webkit-mask-image: linear-gradient(90deg, transparent, #000 60%); pointer-events: none; }
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .16); color: #E3E5FB; border-radius: var(--pill); padding: 5px 13px 5px 6px; font-size: 13.5px; }
+.eyebrow i { width: 8px; height: 8px; border-radius: 50%; background: #7BE0A6; margin-left: 6px; display: block; box-shadow: 0 0 0 4px rgba(123, 224, 166, .18); }
+.herocard h1 { font-size: clamp(36px, 4vw, 56px); line-height: 1.02; margin-top: 20px; }
+.herocard h1 .dim { color: #B6BAEA; }
+.herocard .sub { color: #D3D6F3; font-size: 18.5px; max-width: 34em; margin: 20px 0 0; }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+/* Ada first: she signs on her stage before anything else; her lower cut meets the caption band */
+.stage { position: relative; z-index: 1; justify-self: end; width: min(500px, 100%); border-radius: var(--r-l); overflow: hidden; background: var(--stage); box-shadow: var(--shadow); }
+.stage video { width: 100%; aspect-ratio: 960 / 840; object-fit: cover; }
+.stage .chip { position: absolute; top: 14px; left: 14px; display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, .92); color: var(--ink); font-size: 13px; border-radius: var(--pill); padding: 4px 12px 4px 10px; }
+.stage .chip i { width: 7px; height: 7px; border-radius: 50%; background: #23A55A; display: block; }
+.stage .band2 { background: #fff; color: var(--ink); text-align: center; font-size: 16px; padding: 14px 18px; }
+
+/* the panel that overlaps the hero's bottom edge */
+.works { position: relative; z-index: 3; margin: -96px auto 0; width: calc(100% - 40px); max-width: 1120px; background: #fff; border-radius: var(--r-l); box-shadow: var(--shadow-s); padding: 26px 28px; display: grid; grid-template-columns: 250px 1fr; gap: 24px; align-items: center; }
+.works h2 { font-size: 20px; letter-spacing: -0.01em; }
+.works p { color: var(--ink-2); font-size: 14.5px; margin: 4px 0 0; }
+.plats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.plat { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; line-height: 1.3; border: 1px solid var(--line); border-radius: var(--r-m); padding: 14px 16px; font-weight: 500; color: var(--ink); }
+.plat .pi { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; flex: none; }
+.plat small { display: block; color: var(--ink-3); font-weight: 400; font-size: 12.5px; }
+
+/* sections */
+.band { padding-block: 104px; }
+.band.tint { background: var(--tint); }
+.band.deep { background: var(--deep); color: #fff; }
+.head { display: grid; gap: 14px; max-width: 760px; }
+.head.center { margin: 0 auto; text-align: center; justify-items: center; }
+.kick { color: var(--acc); font-weight: 500; font-size: 15px; }
+.band.deep .kick { color: var(--acc-2); }
+.head h2 { font-size: clamp(32px, 3.6vw, 46px); line-height: 1.08; }
+.head p { color: var(--ink-2); font-size: 18px; margin: 0; }
+.band.deep .head p { color: #C9CCEC; }
+
+/* product switcher */
+.switch { margin-top: 48px; display: grid; grid-template-columns: 380px 1fr; gap: 28px; align-items: start; }
+.tabs { display: grid; gap: 10px; }
+.tab { text-align: left; font: inherit; background: #fff; border: 1px solid var(--line); border-radius: var(--r-l); padding: 20px 22px; cursor: pointer; color: var(--ink-2); transition: border-color .2s, box-shadow .2s; display: grid; gap: 6px; }
+.tab .tt { display: flex; align-items: center; gap: 12px; color: var(--ink); font-weight: 600; font-size: 18px; letter-spacing: -0.015em; }
+.tab .ti { width: 40px; height: 40px; border-radius: 12px; background: var(--soft); color: var(--acc); display: grid; place-items: center; flex: none; }
+.tab p { margin: 0; font-size: 15px; display: none; }
+.tab[aria-selected="true"] { border-color: var(--acc); box-shadow: 0 0 0 3px var(--soft); }
+.tab[aria-selected="true"] p { display: block; }
+.tab[aria-selected="true"] .ti { background: var(--acc); color: #fff; }
+.shot { position: relative; border-radius: var(--r-l); background: linear-gradient(150deg, var(--soft), #DCDEF7); padding: 28px; overflow: hidden; }
+.shot .win { position: relative; width: 100%; transform: none; box-shadow: var(--shadow); }
+.shot .cap { position: relative; margin-top: 18px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.shot .cap span { color: var(--ink-2); font-size: 14.5px; }
+.pane[hidden] { display: none !important; }
+
+/* demo video */
+.vidwrap { margin: 48px auto 0; max-width: 1040px; border-radius: var(--r-l); overflow: hidden; box-shadow: var(--shadow); background: #0E1116; position: relative; }
+.vidwrap video { width: 100%; }
+.vidnote { text-align: center; color: var(--ink-3); font-size: 14px; margin-top: 14px; }
+
+/* deep band: why, with the signer collage */
+.why { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.collage { position: relative; height: 480px; }
+.tile { position: absolute; border-radius: var(--r-l); overflow: hidden; display: flex; align-items: flex-end; justify-content: center; }
+.tile img, .tile video { width: 92%; height: auto; }
+.tile.t1 { left: 0; top: 0; width: 58%; height: 72%; background: var(--stage); }
+.tile.t2 { right: 0; bottom: 0; width: 50%; height: 58%; background: var(--mint); box-shadow: var(--shadow); }
+.tile .tag { position: absolute; top: 12px; left: 12px; background: rgba(255, 255, 255, .92); color: var(--ink); font-size: 12.5px; border-radius: var(--pill); padding: 3px 11px; }
+.cmp { display: grid; gap: 12px; margin-top: 30px; }
+.cmp > div { display: grid; grid-template-columns: 170px 1fr; gap: 16px; padding: 16px 18px; border-radius: var(--r-m); background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .1); color: #C9CCEC; font-size: 15.5px; }
+.cmp b { color: #fff; font-weight: 500; }
+.cmp > div.us { background: var(--acc); border-color: var(--acc); color: #fff; }
+
+/* numbers */
+.stats { margin-top: 48px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--line); }
+.stat { padding: 28px 24px 4px 0; }
+.stat + .stat { padding-left: 24px; border-left: 1px solid var(--line); }
+.stat b { display: block; font-size: clamp(40px, 4.4vw, 60px); line-height: 1; font-weight: 600; letter-spacing: -0.035em; color: var(--acc); }
+.stat span { display: block; margin-top: 12px; color: var(--ink-2); font-size: 15px; max-width: 22ch; }
+.srcnote { color: var(--ink-3); font-size: 13px; margin-top: 28px; }
+.badges { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 12px; }
+.badge { display: inline-flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--pill); padding: 8px 18px 8px 8px; font-size: 14.5px; color: var(--ink-2); }
+.badge .bi { width: 34px; height: 34px; border-radius: 50%; background: var(--soft); color: var(--acc); display: grid; place-items: center; }
+.badge b { color: var(--ink); font-weight: 500; }
+
+
+/* closing CTA */
+.cta { border-radius: var(--r-xl); background: radial-gradient(90% 120% at 100% 0%, #C9CCF5 0%, rgba(201, 204, 245, 0) 60%), linear-gradient(180deg, var(--soft), #E1E3F9); padding: 64px 56px 0; display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; overflow: hidden; }
+.cta h2 { font-size: clamp(30px, 3.4vw, 44px); line-height: 1.08; }
+.cta p { color: var(--ink-2); font-size: 18px; margin: 16px 0 0; }
+.cta .copy { padding-bottom: 64px; }
+.mail { margin-top: 18px; display: inline-flex; align-items: center; gap: 8px; color: var(--ink-2); font-size: 15px; }
+.mail span { user-select: all; color: var(--ink); }
+.cta .adacta { align-self: end; justify-self: center; width: min(360px, 100%); }
+
+/* footer */
+footer { margin-top: 32px; padding-bottom: 28px; }
+.foot { position: relative; overflow: hidden; border-radius: var(--r-xl); background: var(--tint); padding: 56px 56px 0; }
+.fcols { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; position: relative; z-index: 1; }
+.fcols .logo { display: inline-flex; color: var(--ink); font-size: 18px; margin: 0; }
+.fcols h4 { margin: 0 0 12px; font-size: 14px; color: var(--ink); font-weight: 600; }
+.fcols a, .fcols span { display: block; color: var(--ink-2); text-decoration: none; font-size: 14.5px; margin-bottom: 8px; }
+.fcols a:hover { color: var(--acc); }
+.fcols .lead { color: var(--ink-2); font-size: 14.5px; max-width: 28ch; margin-top: 12px; }
+.wordmark { position: relative; margin-top: 40px; font-size: clamp(64px, 15vw, 210px); line-height: .78; font-weight: 700; letter-spacing: -0.06em; color: transparent; background: linear-gradient(180deg, #D9DBF4, rgba(217, 219, 244, 0)); -webkit-background-clip: text; background-clip: text; user-select: none; white-space: nowrap; }
+.legal { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: var(--ink-3); font-size: 13.5px; padding: 18px 8px 0; }
+
+/* Ada's corner window: she signs the page */
+.ada { position: fixed; z-index: 40; right: max(18px, env(safe-area-inset-right, 0px)); bottom: max(18px, env(safe-area-inset-bottom, 0px)); width: 224px; border-radius: 18px; overflow: hidden; background: var(--ink); box-shadow: 0 24px 50px -18px rgba(16, 18, 48, .55); }
+.ada .abar { display: flex; align-items: center; gap: 8px; padding: 7px 8px 7px 12px; color: #fff; font-size: 13px; }
+.ada .abar .live { width: 7px; height: 7px; border-radius: 50%; background: #7BE0A6; }
+.ada .abar .sp { flex: 1; }
+.ada .abar button { background: transparent; border: 0; color: #fff; opacity: .85; cursor: pointer; padding: 3px; display: grid; place-items: center; border-radius: 6px; }
+.ada .abar button:hover { opacity: 1; background: rgba(255, 255, 255, .1); }
+.ada .astage { background: var(--stage); display: flex; align-items: flex-end; justify-content: center; }
+.ada .astage video { width: 100%; height: auto; }
+.ada .aband { background: #fff; color: var(--ink); font-size: 13px; padding: 8px 12px; text-align: center; }
+.ada .aband b { background: var(--acc); color: #fff; border-radius: 5px; padding: 0 5px; font-weight: 500; }
+.ada.min .astage, .ada.min .aband { display: none; }
+.ada.min { width: auto; }
+.ada { transition: opacity .3s, transform .3s; }
+.ada.off { opacity: 0; transform: translateY(24px); pointer-events: none; visibility: hidden; }
+
+@media (max-width: 980px) {
+  .nav .links { display: none; }
+  .herocard { grid-template-columns: 1fr; padding: 48px 26px 150px; min-height: 0; }
+  .stage { justify-self: center; }
+  .works { grid-template-columns: 1fr; padding: 22px; }
+  .plats { grid-template-columns: 1fr 1fr; }
+  .switch, .why, .cta { grid-template-columns: 1fr; }
+  .collage { height: 380px; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stat:nth-child(3) { border-left: 0; padding-left: 0; }
+  .fcols { grid-template-columns: 1fr 1fr; }
+  .cta, .foot { padding-inline: 26px; }
+  .band { padding-block: 72px; }
+}
+@media (max-width: 560px) {
+  .nav { padding-left: 14px; gap: 8px; }
+  .nav .dark { display: none; }
+  .herocard { padding: 36px 20px 120px; border-radius: 24px; }
+  .stage .band2 { font-size: 14px; padding: 10px 12px; }
+  .cta .adacta { width: 240px; }
+  .cmp > div { grid-template-columns: 1fr; gap: 4px; }
+  .plat { padding: 12px; }
+  .ada { width: 150px; }
+  .ada .aband { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .btn, .btn .arr { transition: none; } }
+</style>
+</head>
+<body>
+
+<div class="ann"><b>Ada now signs in American Sign Language.</b> Nigerian Sign Language is next.</div>
+
+<div class="navwrap">
+  <nav class="nav" aria-label="Main">
+    <a class="logo" href="#top"><span class="mk"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13v-7.5a1.5 1.5 0 0 1 3 0v6.5"/><path d="M11 5.5v-2a1.5 1.5 0 1 1 3 0v8.5"/><path d="M14 5.5a1.5 1.5 0 0 1 3 0v6.5"/><path d="M17 7.5a1.5 1.5 0 0 1 3 0v8.5a6 6 0 0 1 -6 6h-2h.208a6 6 0 0 1 -5.012 -2.7a69.74 69.74 0 0 1 -.196 -.3c-.312 -.479 -1.407 -2.388 -3.286 -5.728a1.5 1.5 0 0 1 .536 -2.022a1.867 1.867 0 0 1 2.28 .28l1.47 1.47"/></svg></span>SocialSign</a>
+    <div class="links"><a href="#products">Products</a><a href="#demo">See it working</a><a href="#why">Why SocialSign</a><a href="#progress">Progress</a></div>
+    <a class="btn dark" href="#contact">Book a demo</a>
+    <a class="btn acc" href="#demo">Meet Ada <span class="arr"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 18l6-6M13 6l6 6"/></svg></span></a>
+  </nav>
+</div>
+
+<main id="top">
+  <section class="hero">
+    <div class="in">
+      <div class="herocard">
+        <div style="position:relative;z-index:1">
+          <span class="eyebrow"><i></i>A lifelike digital signer for every screen</span>
+          <h1><span class="dim">The content is already there.</span> Make it accessible in <span class="hl">sign language.</span></h1>
+          <p class="sub">Meet Ada, our lifelike digital signer. She signs online videos, live broadcasts, websites and apps, right where people already are.</p>
+          <div class="ctas">
+            <a class="btn lav" href="#demo">Watch Ada at work <span class="arr"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 18l6-6M13 6l6 6"/></svg></span></a>
+            <a class="btn line" href="#contact">Book a demo</a>
+          </div>
+        </div>
+        <figure class="stage" style="margin:0">
+          <span class="chip"><i></i>Ada · American Sign Language</span>
+          <video autoplay muted loop playsinline poster="media/ada-welcome.png" aria-label="Ada signing: Hello, welcome. Sign language for everything you watch."><source src="media/ada-welcome-hevc.mp4" type='video/mp4; codecs="hvc1"'><source src="media/ada-welcome.webm" type="video/webm"></video>
+          <figcaption class="band2">Hello, welcome. Sign language for everything you watch.</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="works">
+      <div><h2>Works where people already watch</h2><p>No new app to learn. Ada joins the platforms they use every day.</p></div>
+      <div class="plats">
+        <div class="plat"><span class="pi" style="background:#FDECEC;color:#E02424"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8a4 4 0 0 1 4 -4h12a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-12a4 4 0 0 1 -4 -4v-8z"/><path d="M10 9l5 3l-5 3z"/></svg></span><div>YouTube<small>Browser extension</small></div></div>
+        <div class="plat"><span class="pi" style="background:#ECECF0;color:#111"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 7.917v4.034a9.948 9.948 0 0 1 -5 -1.951v4.5a6.5 6.5 0 1 1 -8 -6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917z"/></svg></span><div>TikTok<small>Supported videos</small></div></div>
+        <div class="plat"><span class="pi" style="background:var(--soft);color:var(--acc)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.364 19.364a9 9 0 1 0 -12.728 0"/><path d="M15.536 16.536a5 5 0 1 0 -7.072 0"/><path d="M12 13m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/></svg></span><div>OBS live streams<small>One link</small></div></div>
+        <div class="plat"><span class="pi" style="background:#E8F5EE;color:#1E7B4D"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 8l-4 4l4 4"/><path d="M17 8l4 4l-4 4"/><path d="M14 4l-4 16"/></svg></span><div>Your website or app<small>API and dashboard</small></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="products">
+    <div class="in">
+      <div class="head"><span class="kick">Products</span><h2>One signer, everywhere your audience is</h2><p>Instead of asking people to change where they watch, learn, or follow the news, we bring sign language directly into those experiences.</p></div>
+      <div class="switch">
+        <div class="tabs" role="tablist" aria-label="Products">
+          <button class="tab" role="tab" id="t-ext" aria-selected="true" aria-controls="p-ext"><span class="tt"><span class="ti"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1"/></svg></span>Browser extension</span><p>Turn on the SocialSign extension and Ada signs YouTube and supported TikTok videos, right alongside them.</p></button>
+          <button class="tab" role="tab" id="t-live" aria-selected="false" aria-controls="p-live"><span class="tt"><span class="ti"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.364 19.364a9 9 0 1 0 -12.728 0"/><path d="M15.536 16.536a5 5 0 1 0 -7.072 0"/><path d="M12 13m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/></svg></span>Go live</span><p>Churches and broadcasters bring Ada into their OBS live stream with a single link. She signs alongside the presenter, and their setup stays the same.</p></button>
+          <button class="tab" role="tab" id="t-dev" aria-selected="false" aria-controls="p-dev"><span class="tt"><span class="ti"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 8l-4 4l4 4"/><path d="M17 8l4 4l-4 4"/><path d="M14 4l-4 16"/></svg></span>Dashboard and API</span><p>Type a sentence and watch it signed, or create API keys and add a signer to your own websites and apps.</p></button>
+        </div>
+        <div>
+          <div class="shot pane" id="p-ext" role="tabpanel" aria-labelledby="t-ext"><div class="win"><div class="bar"><i></i><i></i><i></i><span>Ada beside a Channels Television video on YouTube</span></div><img src="media/youtube.jpg" alt="Ada signing beside a Channels Television video on YouTube" loading="lazy"></div><div class="cap"><span>Also on supported TikTok videos.</span><a class="btn acc" href="#contact">Get the extension <span class="arr"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 18l6-6M13 6l6 6"/></svg></span></a></div></div>
+          <div class="shot pane" id="p-live" role="tabpanel" aria-labelledby="t-live" hidden><div class="win"><div class="bar"><i></i><i></i><i></i><span>Ada beside a presenter in OBS</span></div><img src="media/obs.jpg" alt="Ada signing beside a sports presenter inside OBS" loading="lazy"></div><div class="cap"><span>Open one link on the streaming computer. Nothing to install.</span><a class="btn acc" href="#contact">Set up a live stream <span class="arr"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 18l6-6M13 6l6 6"/></svg></span></a></div></div>
+          <div class="shot pane" id="p-dev" role="tabpanel" aria-labelledby="t-dev" hidden><div class="win"><div class="bar"><i></i><i></i><i></i><span>The SocialSign dashboard</span></div><img src="media/dashboard.jpg" alt="The SocialSign dashboard: a typed sentence and Ada signing it" loading="lazy"></div><div class="cap"><span>Each word lights up as Ada signs it.</span><a class="btn acc" href="#contact">See the developer tools <span class="arr"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 18l6-6M13 6l6 6"/></svg></span></a></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band tint" id="demo">
+    <div class="in">
+      <div class="head center"><span class="kick">See it working</span><h2>Ada on YouTube, TikTok, OBS and the dashboard, in 47 seconds</h2></div>
+      <div class="vidwrap"><video src="media/demo.mp4" poster="media/demo-poster.jpg" controls playsinline preload="metadata"></video></div>
+      <p class="vidnote">Captions show every word spoken.</p>
+    </div>
+  </section>
+
+  <section class="band deep" id="why">
+    <div class="in why">
+      <div class="collage" aria-hidden="true">
+        <div class="tile t1"><span class="tag">American Sign Language</span><img src="media/ada-welcome.png" alt=""></div>
+        <div class="tile t2"><span class="tag">Signing live</span><img src="media/ada-still-2.png" alt=""></div>
+      </div>
+      <div>
+        <div class="head"><span class="kick">Why SocialSign</span><h2>Sign language that comes to the content</h2><p>Deaf people shouldn't have to leave what they're watching to understand it.</p></div>
+        <div class="cmp">
+          <div><b>Captions</b>Provide text, and text is not sign language.</div>
+          <div><b>Recorded signing</b>Needs every piece of content prepared in advance.</div>
+          <div><b>Standalone apps</b>Take people away from what they want to watch.</div>
+          <div class="us"><b>SocialSign</b>Brings sign language into the experiences people already use.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="progress">
+    <div class="in">
+      <div class="head"><span class="kick">Progress</span><h2>Moving from prototype to pilots</h2></div>
+      <div class="stats">
+        <div class="stat"><b>5,000+</b><span>signs in Ada's library, up from 1,439</span></div>
+        <div class="stat"><b>60+</b><span>people have tested the product</span></div>
+        <div class="stat"><b>5</b><span>potential pilot partners across media, churches and digital platforms</span></div>
+        <div class="stat"><b>~7M</b><span>estimated Deaf Nigerians</span></div>
+      </div>
+      <div class="badges">
+        <span class="badge"><span class="bi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9m-6 0a6 6 0 1 0 12 0a6 6 0 1 0 -12 0"/><path d="M12 15l3.4 5.89l1.598 -3.233l3.598 .232l-3.4 -5.889"/><path d="M6.802 12l-3.4 5.89l3.598 -.233l1.598 3.232l3.4 -5.889"/></svg></span><span><b>Finalist</b>, Wema Bank Hackaholics 7.0, Social Impact track</span></span>
+        <span class="badge"><span class="bi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5l10 -10"/></svg></span><span><b>Registered</b>: SocialSign Technologies Limited, RC 9949348</span></span>
+      </div>
+      <p class="srcnote">~7M: estimate by H. Taiwo, president of the Nigerian National Association of the Deaf (Leadership, Sep 2026).</p>
+    </div>
+  </section>
+
+  <section class="band" id="contact" style="padding-block:72px 0">
+    <div class="in">
+      <div class="cta">
+        <div class="copy">
+          <h2>Our vision is a world where Deaf people feel included, informed, and free to participate.</h2>
+          <p>We're looking for pilot partners, Deaf testers and supporters. Tell us what you'd like Ada to sign.</p>
+          <div class="ctas"><a class="btn acc" href="mailto:samuelshonubi860@gmail.com?subject=SocialSign%20demo">Book a demo <span class="arr"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 18l6-6M13 6l6 6"/></svg></span></a></div>
+          <div class="mail"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"/><path d="M3 7l9 6l9 -6"/></svg><span>samuelshonubi860@gmail.com</span></div>
+        </div>
+        <img class="adacta" src="media/ada-welcome.png" alt="Ada, SocialSign's digital signer">
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="in">
+    <div class="foot">
+      <div class="fcols">
+        <div><a class="logo" href="#top"><span class="mk"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13v-7.5a1.5 1.5 0 0 1 3 0v6.5"/><path d="M11 5.5v-2a1.5 1.5 0 1 1 3 0v8.5"/><path d="M14 5.5a1.5 1.5 0 0 1 3 0v6.5"/><path d="M17 7.5a1.5 1.5 0 0 1 3 0v8.5a6 6 0 0 1 -6 6h-2h.208a6 6 0 0 1 -5.012 -2.7a69.74 69.74 0 0 1 -.196 -.3c-.312 -.479 -1.407 -2.388 -3.286 -5.728a1.5 1.5 0 0 1 .536 -2.022a1.867 1.867 0 0 1 2.28 .28l1.47 1.47"/></svg></span>SocialSign</a><p class="lead">A lifelike digital signer that brings sign language to the content people already use.</p></div>
+        <div><h4>Products</h4><a href="#products">Browser extension</a><a href="#products">Go live</a><a href="#products">Dashboard and API</a></div>
+        <div><h4>Company</h4><a href="#why">Why SocialSign</a><a href="#progress">Progress</a></div>
+        <div><h4>Contact</h4><a href="#contact">Book a demo</a><span>Ibadan, Nigeria</span></div>
+      </div>
+      <div class="wordmark" aria-hidden="true">SocialSign</div>
+    </div>
+    <div class="legal"><span>© 2026 SocialSign Technologies Limited · RC 9949348</span><span>Ada is a digital signer. Signing is generated by SocialSign.</span></div>
+  </div>
+</footer>
+
+<aside class="ada off" id="ada" aria-label="Ada, signing this page">
+  <div class="abar"><span class="live"></span><span>Ada · signing this page</span><span class="sp"></span><button type="button" id="ada-min" aria-label="Minimise Ada" aria-expanded="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button></div>
+  <div class="astage"><video autoplay muted loop playsinline poster="media/ada-welcome.png" aria-label="Ada signing: Hello, welcome. Sign language for everything you watch."><source src="media/ada-welcome-hevc.mp4" type='video/mp4; codecs="hvc1"'><source src="media/ada-welcome.webm" type="video/webm"></video></div>
+  <div class="aband"><b>Hello</b>, welcome. Sign language for everything you watch.</div>
+</aside>
+
+<script>
+// product tabs
+const tabs = [...document.querySelectorAll('.tab')];
+tabs.forEach((t) => t.addEventListener('click', () => {
+  tabs.forEach((x) => { const on = x === t; x.setAttribute('aria-selected', on); document.getElementById(x.getAttribute('aria-controls')).hidden = !on; });
+}));
+// Ada's window: minimise and restore, remembered per visitor
+const ada = document.getElementById('ada'), btn = document.getElementById('ada-min');
+const setMin = (m) => { ada.classList.toggle('min', m); btn.setAttribute('aria-expanded', !m); btn.setAttribute('aria-label', m ? 'Show Ada' : 'Minimise Ada'); };
+try { if (localStorage.getItem('ss-ada-min') === '1') setMin(true); } catch (_) {}
+btn.addEventListener('click', () => { const m = !ada.classList.contains('min'); setMin(m); try { localStorage.setItem('ss-ada-min', m ? '1' : '0'); } catch (_) {} });
+// she already signs in the hero, so her corner window comes in once the hero has scrolled away
+new IntersectionObserver(([e]) => ada.classList.toggle('off', e.isIntersecting), { threshold: 0.25 }).observe(document.querySelector('.herocard'));
+</script>
+</body>
+</html>
